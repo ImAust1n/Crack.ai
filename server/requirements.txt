@@ -1,6 +1,5 @@
-flask==2.2.2
-flask-cors==3.0.10
-requests==2.28.1
-python-dotenv==0.21.0
-langchain-groq==0.0.21
-jsonlib==1.6.1
+Flask==2.3.3            # for better 3.13 support
+requests==2.32.3        # latest stable
+python-dotenv==1.1.0    # added explicit 3.13 support
+langchain-groq==0.3.7   # recent version, safer compatibility
+
