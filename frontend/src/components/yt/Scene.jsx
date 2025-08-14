@@ -20,10 +20,41 @@ const CameraManager = () => {
 };
 
 const Scene = ({ videoUrl, subjectId, topicId }) => {
-  // State for single topic image
-  const [topicImage, setTopicImage] = useState("https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=1280&q=80&auto=format&fit=crop");
-  // State for topic text content
-  const [topicText, setTopicText] = useState("Loading topic information...");
+  const storageKey = subjectId && topicId ? `topicContentCache:${subjectId}:${topicId}` : undefined;
+  // State for single topic image (seed from cache if present)
+  const [topicImage, setTopicImage] = useState(() => {
+    try {
+      if (storageKey) {
+        const cached = JSON.parse(localStorage.getItem(storageKey) || 'null');
+        if (cached?.topicImage) return cached.topicImage;
+      }
+    } catch {}
+    return "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=1280&q=80&auto=format&fit=crop";
+  });
+  // State for topic text content (seed from cache if present)
+  const [topicText, setTopicText] = useState(() => {
+    try {
+      if (storageKey) {
+        const cached = JSON.parse(localStorage.getItem(storageKey) || 'null');
+        if (cached?.topicText) return cached.topicText;
+      }
+    } catch {}
+    return "Loading topic information...";
+  });
+
+  const writeCache = (imageVal, textVal) => {
+    try {
+      if (!storageKey) return;
+      const prev = JSON.parse(localStorage.getItem(storageKey) || 'null') || {};
+      const next = {
+        ...prev,
+        topicImage: imageVal ?? prev.topicImage,
+        topicText: textVal ?? prev.topicText,
+        updatedAt: Date.now(),
+      };
+      localStorage.setItem(storageKey, JSON.stringify(next));
+    } catch {}
+  };
 
   // Fetch single topic-related image from backend
   useEffect(() => {
@@ -33,7 +64,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       try {
         const searchTerm = topicId.replace(/-/g, ' '); // Convert topic ID to readable term
 
-        const response = await fetch(import.meta.env.REACT_APP_BACKEND_URL || 'http://127.0.0.1:5000/api/image', {
+        const response = await fetch(import.meta.env.REACT_APP_BACKEND_URL + '/api/image' || 'http://127.0.0.1:5000/api/image', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -47,6 +78,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
           const data = await response.json();
           if (data.response && !data.response.startsWith('Error:')) {
             setTopicImage(data.response);
+            writeCache(data.response, undefined);
           } else {
             console.warn('Invalid image response from backend, using default image');
           }
@@ -70,7 +102,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       try {
         const searchTerm = topicId.replace(/-/g, ' '); // Convert topic ID to readable term
 
-        const response = await fetch('http://127.0.0.1:5000/api/text', {
+        const response = await fetch(import.meta.env.REACT_APP_BACKEND_URL + '/api/text' || 'http://127.0.0.1:5000/api/text', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -99,6 +131,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
             // Clean up any extra formatting
             textContent = String(textContent).trim();
             setTopicText(textContent);
+            writeCache(undefined, textContent);
           } else {
             setTopicText("Unable to load topic information. Please check your connection.");
           }
