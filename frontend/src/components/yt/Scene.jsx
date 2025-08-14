@@ -64,7 +64,8 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       try {
         const searchTerm = topicId.replace(/-/g, ' '); // Convert topic ID to readable term
 
-        const response = await fetch(import.meta.env.REACT_APP_BACKEND_URL + '/api/image' || 'http://127.0.0.1:5000/api/image', {
+        const backend = (import.meta?.env?.VITE_BACKEND_URL || 'http://127.0.0.1:5000');
+        const response = await fetch(`${backend}/api/image`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +103,8 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       try {
         const searchTerm = topicId.replace(/-/g, ' '); // Convert topic ID to readable term
 
-        const response = await fetch(import.meta.env.REACT_APP_BACKEND_URL + '/api/text' || 'http://127.0.0.1:5000/api/text', {
+        const backend = (import.meta?.env?.VITE_BACKEND_URL || 'http://127.0.0.1:5000');
+        const response = await fetch(`${backend}/api/text`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

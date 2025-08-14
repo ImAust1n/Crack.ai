@@ -52,7 +52,8 @@ export function useTopicContent(subjectId, topicId) {
     } catch {}
   };
 
-  const backendBase = import.meta?.env?.REACT_APP_BACKEND_URL || 'http://127.0.0.1:5000';
+  // Vite exposes env vars prefixed with VITE_
+  const backendBase = (import.meta?.env?.VITE_BACKEND_URL || 'http://127.0.0.1:5000');
 
   // Image fetch (requires only topicId)
   useEffect(() => {
