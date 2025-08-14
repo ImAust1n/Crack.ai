@@ -28,7 +28,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
         const cached = JSON.parse(localStorage.getItem(storageKey) || 'null');
         if (cached?.topicImage) return cached.topicImage;
       }
-    } catch {}
+    } catch { }
     return "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=1280&q=80&auto=format&fit=crop";
   });
   // State for topic text content (seed from cache if present)
@@ -38,7 +38,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
         const cached = JSON.parse(localStorage.getItem(storageKey) || 'null');
         if (cached?.topicText) return cached.topicText;
       }
-    } catch {}
+    } catch { }
     return "Loading topic information...";
   });
 
@@ -53,7 +53,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
         updatedAt: Date.now(),
       };
       localStorage.setItem(storageKey, JSON.stringify(next));
-    } catch {}
+    } catch { }
   };
 
   // Fetch single topic-related image from backend
@@ -64,7 +64,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       try {
         const searchTerm = topicId.replace(/-/g, ' '); // Convert topic ID to readable term
 
-        const backend = (import.meta?.env?.VITE_BACKEND_URL || 'http://127.0.0.1:5000');
+        const backend = (import.meta?.env?.VITE_BACKEND_URL);
         const response = await fetch(`${backend}/api/image`, {
           method: 'POST',
           headers: {
@@ -103,7 +103,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       try {
         const searchTerm = topicId.replace(/-/g, ' '); // Convert topic ID to readable term
 
-        const backend = (import.meta?.env?.VITE_BACKEND_URL || 'http://127.0.0.1:5000');
+        const backend = (import.meta?.env?.VITE_BACKEND_URL);
         const response = await fetch(`${backend}/api/text`, {
           method: 'POST',
           headers: {
@@ -119,7 +119,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
           if (data.response && !data.response.startsWith('Error:')) {
             // Ensure we extract just the text content, not JSON formatting
             let textContent = data.response;
-            
+
             // If the response is a stringified JSON, parse it
             if (typeof textContent === 'string' && textContent.startsWith('{')) {
               try {
@@ -129,7 +129,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
                 // If parsing fails, use the original text
               }
             }
-            
+
             // Clean up any extra formatting
             textContent = String(textContent).trim();
             setTopicText(textContent);
@@ -152,7 +152,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
   // Convert YouTube URL to embed format
   const getEmbedUrl = (url) => {
     if (!url) return "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&playsinline=1&rel=0&controls=1&modestbranding=1";
-    
+
     try {
       // Handle various YouTube URL formats
       if (url.includes('youtube.com/watch?v=')) {
@@ -187,7 +187,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       {/* Center frame with YouTube video anchored in scene (world space) */}
       <group position={[0, 0, -1.5]}>
         {/* Inner dark panel (slightly smaller) */}
-        <mesh position={[0, 0, -0.01]}> 
+        <mesh position={[0, 0, -0.01]}>
           <planeGeometry args={[1.2, 0.7]} />
           <meshStandardMaterial color="#222" />
         </mesh>
@@ -263,7 +263,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
           </div>
         </Html>
       </group>
-      
+
       {/* Right screen-like frame (further right, tilted toward user) */}
       <group position={[3.0, 0, -1.4]} rotation={[0, -0.35, 0]}>
         {/* Inner dark panel */}
@@ -296,10 +296,10 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
               overscrollBehavior: "contain",
             }}
           >
-            <h3 style={{margin: "0 0 8px", fontSize: "18px", color: "#fff"}}>
+            <h3 style={{ margin: "0 0 8px", fontSize: "18px", color: "#fff" }}>
               {topicId ? topicId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Topic Information'}
             </h3>
-            <div style={{margin: "0", opacity: 0.9, whiteSpace: "pre-wrap", lineHeight: 1.5}}>
+            <div style={{ margin: "0", opacity: 0.9, whiteSpace: "pre-wrap", lineHeight: 1.5 }}>
               {topicText}
             </div>
           </div>
