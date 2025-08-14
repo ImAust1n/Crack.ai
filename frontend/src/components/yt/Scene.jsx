@@ -33,7 +33,7 @@ const Scene = ({ videoUrl, subjectId, topicId }) => {
       try {
         const searchTerm = topicId.replace(/-/g, ' '); // Convert topic ID to readable term
 
-        const response = await fetch('http://127.0.0.1:5000/api/image', {
+        const response = await fetch(import.meta.env.REACT_APP_BACKEND_URL || 'http://127.0.0.1:5000/api/image', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
