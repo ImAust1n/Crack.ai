@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q-waves-1",
+    "topicId": "physics-waves",
+    "stem": "A wave has frequency 100 Hz and wavelength 2m. What is its speed?",
+    "options": ["50 m/s", "200 m/s", "100 m/s", "400 m/s"],
+    "answer": 1,
+    "explanation": "Speed = frequency × wavelength = 100 Hz × 2m = 200 m/s",
+    "difficulty": "easy",
+    "tags": ["wave-speed", "calculation"]
+  },
+  {
+    "id": "q-waves-2", 
+    "topicId": "physics-waves",
+    "stem": "In SHM, when is the acceleration maximum?",
+    "options": ["At equilibrium", "At maximum displacement", "At half displacement", "Always constant"],
+    "answer": 1,
+    "explanation": "Acceleration is maximum at maximum displacement where a = -ω²x is largest",
+    "difficulty": "medium", 
+    "tags": ["SHM", "acceleration"]
+  },
+  {
+    "id": "q-organic-1",
+    "topicId": "chemistry-organic",
+    "stem": "Which functional group is present in alcohols?",
+    "options": ["-COOH", "-OH", "-CHO", "-NH2"],
+    "answer": 1,
+    "explanation": "Alcohols contain the hydroxyl group (-OH)",
+    "difficulty": "easy",
+    "tags": ["functional-groups", "alcohols"]
+  },
+  {
+    "id": "q-genetics-1",
+    "topicId": "biology-genetics", 
+    "stem": "In a monohybrid cross between Tt × Tt, what is the phenotypic ratio?",
+    "options": ["1:1", "3:1", "2:1", "1:2:1"],
+    "answer": 1,
+    "explanation": "TT, Tt, Tt, tt → 3 dominant : 1 recessive phenotype",
+    "difficulty": "medium",
+    "tags": ["monohybrid", "ratios"]
+  },
+  {
+    "id": "q-calculus-1",
+    "topicId": "math-calculus",
+    "stem": "What is the derivative of x³?",
+    "options": ["3x²", "x²", "3x", "x⁴/4"],
+    "answer": 0,
+    "explanation": "Using power rule: d/dx(x³) = 3x²",
+    "difficulty": "easy", 
+    "tags": ["derivatives", "power-rule"]
+  }
+]

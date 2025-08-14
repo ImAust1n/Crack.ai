@@ -1,0 +1,26 @@
+[
+  {
+    "id": "chem_01",
+    "subjectId": "chemistry",
+    "name": "Structure of Atom",
+    "description": "Atomic models, quantum numbers, and electronic configuration.",
+    "estTime": "50",
+    "difficulty": "easy"
+  },
+  {
+    "id": "chem_02",
+    "subjectId": "chemistry",
+    "name": "Chemical Bonding",
+    "description": "Ionic, covalent, and coordinate bonds; VSEPR theory.",
+    "estTime": "65",
+    "difficulty": "medium"
+  },
+  {
+    "id": "chem_03",
+    "subjectId": "chemistry",
+    "name": "Organic Chemistry - Basic Principles",
+    "description": "Nomenclature, isomerism, and fundamental concepts.",
+    "estTime": "80",
+    "difficulty": "hard"
+  }
+]

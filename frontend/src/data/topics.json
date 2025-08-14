@@ -1,0 +1,38 @@
+[
+  {
+    "id": "physics-waves",
+    "subject": "Physics",
+    "name": "Waves and Oscillations", 
+    "difficulty": "medium",
+    "videoIds": ["dQw4w9WgXcQ", "SampleVideoID2"],
+    "description": "Understanding wave motion, simple harmonic motion, and resonance phenomena",
+    "estimatedTime": 45
+  },
+  {
+    "id": "chemistry-organic",
+    "subject": "Chemistry", 
+    "name": "Organic Chemistry Basics",
+    "difficulty": "hard",
+    "videoIds": ["SampleVideoID3", "SampleVideoID4"],
+    "description": "Introduction to organic compounds, nomenclature, and basic reactions",
+    "estimatedTime": 60
+  },
+  {
+    "id": "biology-genetics",
+    "subject": "Biology",
+    "name": "Genetics and Heredity",
+    "difficulty": "medium", 
+    "videoIds": ["SampleVideoID5"],
+    "description": "Mendelian genetics, DNA structure, and inheritance patterns",
+    "estimatedTime": 50
+  },
+  {
+    "id": "math-calculus",
+    "subject": "Mathematics",
+    "name": "Differential Calculus",
+    "difficulty": "hard",
+    "videoIds": ["SampleVideoID6", "SampleVideoID7"],
+    "description": "Limits, derivatives, and applications of differential calculus",
+    "estimatedTime": 55
+  }
+]

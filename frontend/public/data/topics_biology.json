@@ -1,0 +1,26 @@
+[
+  {
+    "id": "bio_01",
+    "subjectId": "biology",
+    "name": "The Living World",
+    "description": "Diversity, taxonomy, and classification of living organisms.",
+    "estTime": "40",
+    "difficulty": "easy"
+  },
+  {
+    "id": "bio_02",
+    "subjectId": "biology",
+    "name": "Cell: The Unit of Life",
+    "description": "Cell theory, structure of prokaryotic and eukaryotic cells.",
+    "estTime": "55",
+    "difficulty": "medium"
+  },
+  {
+    "id": "bio_03",
+    "subjectId": "biology",
+    "name": "Human Physiology",
+    "description": "Digestion, respiration, circulation, and other life processes.",
+    "estTime": "90",
+    "difficulty": "hard"
+  }
+]

@@ -82,14 +82,17 @@ def chat3():
 # WikiPedia Image
 @app.route('/api/image', methods=['POST'])
 def image():
-    user_input = request.json.get('message')
-    reponse = requests.get(f"https://en.wikipedia.org/w/api.php?action=query&titles={user_input}&prop=pageimages&format=json&pithumbsize=500")
-    data = reponse.json()
-    pages = data["query"]["pages"]
-    first_page = next(iter(pages.values()))
-    image_link = first_page["thumbnail"]["source"]
+    try:
+        user_input = request.json.get('message')
+        reponse = requests.get(f"https://en.wikipedia.org/w/api.php?action=query&titles={user_input}&prop=pageimages&format=json&pithumbsize=500")
+        data = reponse.json()
+        pages = data["query"]["pages"]
+        first_page = next(iter(pages.values()))
+        image_link = first_page["thumbnail"]["source"]
 
-    return jsonify({"response": image_link})
+        return jsonify({"response": image_link})
+    except Exception as e:
+        return jsonify({"response": "Error: " + str(e)})
 
 # WikiPedia Text
 @app.route('/api/text', methods=['POST'])

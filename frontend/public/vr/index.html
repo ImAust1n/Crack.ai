@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AI VR Tutor - Exam Learning</title>
+    <meta name="description" content="AI VR Tutor - 180° VR Learning Experience">
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="vr-api.js"></script>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        
+        /* Blue Haze Design System */
+        :root {
+            --primary: #7C659C;
+            --primary-hover: #675582;
+            --background: #F8F7FB;
+            --card: #F2F0F7;
+            --muted: #E6E4F0;
+            --border: #C9C3DE;
+            --text: #372D48;
+            --muted-text: #56476B;
+            --accent: #A191C1;
+            --success: #8D78AF;
+            --error: #FF4B4B;
+            --warning: #FFC857;
+        }
+
+        /* Controls Overlay */
+        #controls-overlay {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(242, 240, 247, 0.95);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            color: var(--text);
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.3s ease;
+        }
+
+        #controls-overlay.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #controls-overlay.pinned {
+            background: rgba(242, 240, 247, 0.98);
+        }
+
+        .controls-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .controls-toggle:hover {
+            background: var(--primary-hover);
+            transform: scale(1.1);
+        }
+
+        .pin-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .pin-button:hover {
+            background: var(--primary);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Controls Toggle Button -->
+    <button class="controls-toggle" onclick="toggleControls()" aria-label="Toggle VR Controls">R</button>
+    
+    <!-- Controls Overlay -->
+    <div id="controls-overlay">
+        <strong>VR Controls:</strong> Look around to explore • Click on glowing spheres to interact • Press VR button in bottom right for immersive mode
+        <button class="pin-button" onclick="togglePin()" id="pin-btn">Pin</button>
+    </div>
+
+    <a-scene 
+        vr-mode-ui="enabled: true" 
+        background="color: #F8F7FB"
+        embedded
+        style="width: 100%; height: 100vh;"
+        cursor="rayOrigin: mouse"
+    >
+        <!-- Assets -->
+        <a-assets>
+            <!-- Mixins for reusable components -->
+            <a-mixin 
+                id="hotspot"
+                geometry="primitive: sphere; radius: 0.12"
+                material="color: #7C659C; opacity: 0.9; metalness: 0.1; roughness: 0.4"
+                animation__hover="property: scale; to: 1.2 1.2 1.2; startEvents: mouseenter; dur: 200; easing: easeOutQuad"
+                animation__unhover="property: scale; to: 1 1 1; startEvents: mouseleave; dur: 200; easing: easeOutQuad"
+                animation__pulse="property: material.opacity; to: 0.6; dur: 2000; loop: true; dir: alternate; easing: easeInOutSine"
+            />
+            
+            <a-mixin
+                id="panel"
+                geometry="primitive: plane"
+                material="color: #F2F0F7; opacity: 0.95; side: double"
+                animation__appear="property: scale; from: 0.1 0.1 0.1; to: 1 1 1; dur: 300; easing: easeOutBack"
+            />
+
+            <a-mixin
+                id="label-plane"
+                geometry="primitive: plane; width: 0.8; height: 0.2"
+                material="color: #F2F0F7; opacity: 0.9"
+            />
+        </a-assets>
+
+        <!-- 180° Sky Panorama -->
+        <a-sky
+            src="/vr-classroom-panorama.jpg"
+            theta-length="180"
+            rotation="0 -90 0"
+        />
+
+        <!-- Camera Rig -->
+        <a-entity id="rig" position="0 1.6 0">
+            <a-camera>
+                <a-cursor
+                    animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                    animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                    geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                    material="color: #7C659C; shader: flat"
+                    cursor="fuse: true; fuseTimeout: 1500"
+                />
+            </a-camera>
+        </a-entity>
+
+        <!-- Central Current Topic Panel -->
+        <a-plane
+            id="panel-current"
+            mixin="panel"
+            position="0 1.6 -1.05"
+            width="1.6"
+            height="0.9"
+            look-at="#rig"
+        />
+        <a-text
+            id="topic-title"
+            value="Current Topic:"
+            position="0 1.75 -1.04"
+            align="center"
+            color="#372D48"
+            width="6"
+            font="kelsonsans"
+            look-at="#rig"
+        />
+        <a-text
+            id="topic-name"
+            value="Organic Chemistry Basics"
+            position="0 1.55 -1.04"
+            align="center"
+            color="#7C659C"
+            width="8"
+            font="kelsonsans"
+            look-at="#rig"
+        />
+
+        <!-- Flashcards Hotspot (Left) -->
+        <a-sphere
+            id="hotspot-flash"
+            mixin="hotspot"
+            position="-1.25 1.4 -1.6"
+            class="clickable"
+            data-action="flashcards"
+        />
+        <a-plane
+            mixin="label-plane"
+            position="-1.25 1.15 -1.6"
+            rotation="0 15 0"
+            look-at="#rig"
+        />
+        <a-text
+            value="📚 Flashcards"
+            position="-1.25 1.15 -1.59"
+            align="center"
+            color="#372D48"
+            width="4"
+            rotation="0 15 0"
+            look-at="#rig"
+        />
+
+        <!-- Take Quiz Hotspot (Center Top) -->
+        <a-sphere
+            id="hotspot-quiz"
+            mixin="hotspot"
+            position="0 1.95 -1.6"
+            class="clickable"
+            data-action="quiz"
+            material="opacity: 0.4"
+        />
+        <a-plane
+            mixin="label-plane"
+            position="0 1.7 -1.6"
+            look-at="#rig"
+        />
+        <a-text
+            value="❓ Take Quiz"
+            position="0 1.7 -1.59"
+            align="center"
+            color="#372D48"
+            width="4"
+            look-at="#rig"
+        />
+
+        <!-- Video Lesson Hotspot (Right) -->
+        <a-sphere
+            id="hotspot-video"
+            mixin="hotspot"
+            position="1.25 1.4 -1.6"
+            class="clickable"
+            data-action="video"
+        />
+        <a-plane
+            mixin="label-plane"
+            position="1.25 1.15 -1.6"
+            rotation="0 -15 0"
+            look-at="#rig"
+        />
+        <a-text
+            value="🎥 Video Lesson"
+            position="1.25 1.15 -1.59"
+            align="center"
+            color="#372D48"
+            width="4"
+            rotation="0 -15 0"
+            look-at="#rig"
+        />
+
+        <!-- Hidden Panels (Initially) -->
+        
+        <!-- Flashcards Panel -->
+        <a-plane
+            id="flashPanel"
+            mixin="panel"
+            position="-1.5 1.5 -1.2"
+            width="1.2"
+            height="1.4"
+            visible="false"
+            look-at="#rig"
+        />
+        <a-text
+            id="flash-content"
+            value="📚 Flashcards\n\n1. What is an alkane?\n2. Define isomerism\n3. Functional groups\n4. Hybridization\n5. Reaction mechanisms\n\n[Close: ESC]"
+            position="-1.5 1.5 -1.19"
+            align="center"
+            color="#372D48"
+            width="4"
+            wrap-count="30"
+            visible="false"
+            look-at="#rig"
+        />
+
+        <!-- Video Panel -->
+        <a-plane
+            id="videoPanel"
+            mixin="panel"
+            position="1.5 1.5 -1.2"
+            width="1.2"
+            height="1.0"
+            visible="false"
+            look-at="#rig"
+        />
+        <a-text
+            id="video-content"
+            value="🎥 Video Lesson\n\nOrganic Chemistry\nBasics\n\n[Open Video]\n\n[Close: ESC]"
+            position="1.5 1.5 -1.19"
+            align="center"
+            color="#372D48"
+            width="4"
+            wrap-count="25"
+            visible="false"
+            look-at="#rig"
+        />
+
+        <!-- Quiz Panel -->
+        <a-plane
+            id="quizPanel"
+            mixin="panel"
+            position="0 2.1 -1.2"
+            width="1.4"
+            height="1.2"
+            visible="false"
+            look-at="#rig"
+        />
+        <a-text
+            id="quiz-content"
+            value="❓ Take Quiz\n\n🔒 Complete video lesson\nto unlock quiz\n\n[Close: ESC]"
+            position="0 2.1 -1.19"
+            align="center"
+            color="#56476B"
+            width="4"
+            wrap-count="25"
+            visible="false"
+            look-at="#rig"
+        />
+
+        <!-- Ambient Lighting -->
+        <a-light type="ambient" color="#A191C1" intensity="0.6" />
+        <a-light type="directional" position="2 4 2" color="#FFFFFF" intensity="0.4" />
+    </a-scene>
+
+    <script>
+        // VR Scene State
+        let VR_STATE = {
+            currentPanel: null,
+            unlocked: {
+                quiz: false,
+                video: true,
+                flashcards: true
+            },
+            currentTopic: 'organic-chemistry-basics'
+        };
+
+        // Controls overlay state
+        let controlsVisible = false;
+        let controlsPinned = localStorage.getItem('vr-controls-pinned') === 'true';
+        let autoHideTimeout;
+
+        // Initialize scene
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeVRScene();
+            setupKeyboardControls();
+            showControlsTemporarily();
+        });
+
+        function initializeVRScene() {
+            // Add click handlers to hotspots
+            const hotspots = document.querySelectorAll('.clickable');
+            hotspots.forEach(hotspot => {
+                hotspot.addEventListener('click', handleHotspotClick);
+                hotspot.addEventListener('mouseenter', function() {
+                    if (!this.disabled) {
+                        this.setAttribute('material', 'color: #675582');
+                    }
+                });
+                hotspot.addEventListener('mouseleave', function() {
+                    if (!this.disabled) {
+                        this.setAttribute('material', 'color: #7C659C');
+                    }
+                });
+            });
+
+            // Click outside to close panels
+            document.querySelector('a-scene').addEventListener('click', function(e) {
+                if (!e.target.classList.contains('clickable') && VR_STATE.currentPanel) {
+                    closeCurrentPanel();
+                }
+            });
+
+            // Load initial data
+            window.VR_API.loadFlashcards(VR_STATE.currentTopic);
+        }
+
+        function handleHotspotClick(event) {
+            event.stopPropagation();
+            const action = event.target.getAttribute('data-action');
+            
+            // Close current panel if clicking same hotspot
+            if (VR_STATE.currentPanel === action) {
+                closeCurrentPanel();
+                return;
+            }
+
+            closeCurrentPanel();
+
+            switch (action) {
+                case 'flashcards':
+                    openPanel('flashPanel', 'flashcards');
+                    break;
+                case 'video':
+                    openPanel('videoPanel', 'video');
+                    break;
+                case 'quiz':
+                    if (VR_STATE.unlocked.quiz) {
+                        openPanel('quizPanel', 'quiz');
+                    } else {
+                        // Show locked message
+                        const quizContent = document.getElementById('quiz-content');
+                        quizContent.setAttribute('value', '❓ Take Quiz\n\n🔒 Complete video lesson\nto unlock quiz\n\n[Close: ESC]');
+                        openPanel('quizPanel', 'quiz');
+                    }
+                    break;
+            }
+        }
+
+        function openPanel(panelId, action) {
+            const panel = document.getElementById(panelId);
+            const content = document.getElementById(panelId.replace('Panel', '-content'));
+            
+            if (panel && content) {
+                panel.setAttribute('visible', 'true');
+                content.setAttribute('visible', 'true');
+                panel.emit('appear');
+                VR_STATE.currentPanel = action;
+            }
+        }
+
+        function closeCurrentPanel() {
+            if (!VR_STATE.currentPanel) return;
+
+            const panelMap = {
+                'flashcards': 'flashPanel',
+                'video': 'videoPanel',
+                'quiz': 'quizPanel'
+            };
+
+            const panelId = panelMap[VR_STATE.currentPanel];
+            if (panelId) {
+                const panel = document.getElementById(panelId);
+                const content = document.getElementById(panelId.replace('Panel', '-content'));
+                
+                if (panel && content) {
+                    panel.setAttribute('visible', 'false');
+                    content.setAttribute('visible', 'false');
+                }
+            }
+
+            VR_STATE.currentPanel = null;
+        }
+
+        function setupKeyboardControls() {
+            document.addEventListener('keydown', function(e) {
+                switch(e.key.toLowerCase()) {
+                    case 'escape':
+                        closeCurrentPanel();
+                        break;
+                    case 'r':
+                        toggleControls();
+                        break;
+                }
+            });
+        }
+
+        function toggleControls() {
+            controlsVisible = !controlsVisible;
+            const overlay = document.getElementById('controls-overlay');
+            
+            if (controlsVisible) {
+                overlay.classList.add('visible');
+                if (!controlsPinned) {
+                    autoHideTimeout = setTimeout(() => {
+                        if (!controlsPinned) {
+                            controlsVisible = false;
+                            overlay.classList.remove('visible');
+                        }
+                    }, 12000);
+                }
+            } else {
+                overlay.classList.remove('visible');
+                if (autoHideTimeout) {
+                    clearTimeout(autoHideTimeout);
+                }
+            }
+        }
+
+        function togglePin() {
+            controlsPinned = !controlsPinned;
+            localStorage.setItem('vr-controls-pinned', controlsPinned);
+            
+            const overlay = document.getElementById('controls-overlay');
+            const pinBtn = document.getElementById('pin-btn');
+            
+            if (controlsPinned) {
+                overlay.classList.add('pinned');
+                pinBtn.textContent = 'Unpin';
+                if (autoHideTimeout) {
+                    clearTimeout(autoHideTimeout);
+                }
+            } else {
+                overlay.classList.remove('pinned');
+                pinBtn.textContent = 'Pin';
+            }
+        }
+
+        function showControlsTemporarily() {
+            if (!controlsPinned) {
+                setTimeout(() => {
+                    toggleControls();
+                }, 1000);
+            } else {
+                controlsVisible = true;
+                document.getElementById('controls-overlay').classList.add('visible', 'pinned');
+                document.getElementById('pin-btn').textContent = 'Unpin';
+            }
+        }
+    </script>
+</body>
+</html>

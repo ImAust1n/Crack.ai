@@ -1,0 +1,26 @@
+[
+  {
+    "id": "phy_01",
+    "subjectId": "physics",
+    "name": "Units and Measurements",
+    "description": "Understanding physical quantities, units, and dimensional analysis.",
+    "estTime": "45",
+    "difficulty": "easy"
+  },
+  {
+    "id": "phy_02",
+    "subjectId": "physics",
+    "name": "Laws of Motion",
+    "description": "Newton's laws, momentum, and friction.",
+    "estTime": "60",
+    "difficulty": "medium"
+  },
+  {
+    "id": "phy_03",
+    "subjectId": "physics",
+    "name": "Thermodynamics",
+    "description": "Heat, work, and the laws of thermodynamics.",
+    "estTime": "75",
+    "difficulty": "hard"
+  }
+]

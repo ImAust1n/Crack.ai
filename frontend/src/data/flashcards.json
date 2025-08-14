@@ -1,0 +1,58 @@
+[
+  {
+    "id": "fc-waves-1",
+    "topicId": "physics-waves",
+    "front": "What is the relationship between frequency and wavelength?",
+    "back": "They are inversely proportional: f = c/λ, where c is the speed of light",
+    "mnemonic": "Frequency goes Fast when wavelength is Little"
+  },
+  {
+    "id": "fc-waves-2", 
+    "topicId": "physics-waves",
+    "front": "Define Simple Harmonic Motion (SHM)",
+    "back": "Motion where restoring force is proportional to displacement: F = -kx",
+    "mnemonic": "Spring Has Motion - force pulls back to center"
+  },
+  {
+    "id": "fc-waves-3",
+    "topicId": "physics-waves", 
+    "front": "What causes resonance?",
+    "back": "When driving frequency matches natural frequency of a system",
+    "mnemonic": "Resonance = Rhythm Matching"
+  },
+  {
+    "id": "fc-organic-1",
+    "topicId": "chemistry-organic",
+    "front": "What is a functional group?",
+    "back": "A group of atoms that determines the chemical properties of organic compounds",
+    "mnemonic": "Function determines the action"
+  },
+  {
+    "id": "fc-organic-2",
+    "topicId": "chemistry-organic",
+    "front": "Name the process of breaking C-C bonds using heat",
+    "back": "Pyrolysis or thermal cracking",
+    "mnemonic": "Pyro = fire breaks bonds"
+  },
+  {
+    "id": "fc-genetics-1", 
+    "topicId": "biology-genetics",
+    "front": "What are alleles?",
+    "back": "Different versions of the same gene",
+    "mnemonic": "Alleles are Alternatives"
+  },
+  {
+    "id": "fc-genetics-2",
+    "topicId": "biology-genetics", 
+    "front": "What is a phenotype?",
+    "back": "Observable characteristics of an organism",
+    "mnemonic": "Phenotype = Physical appearance"
+  },
+  {
+    "id": "fc-calculus-1",
+    "topicId": "math-calculus",
+    "front": "What does a derivative represent?",
+    "back": "The rate of change of a function at a point",
+    "mnemonic": "Derivative = Direction of change"
+  }
+]

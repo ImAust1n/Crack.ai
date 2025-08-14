@@ -1,0 +1,154 @@
+{
+  "topics": [
+    {
+      "id": "organic-chemistry-basics",
+      "subject": "Chemistry",
+      "name": "Organic Chemistry Basics",
+      "difficulty": "Intermediate",
+      "videoIds": ["organic-basics-1", "organic-basics-2"],
+      "description": "Fundamental concepts of organic chemistry including structure, bonding, and basic reactions."
+    },
+    {
+      "id": "photosynthesis",
+      "subject": "Biology", 
+      "name": "Photosynthesis",
+      "difficulty": "Intermediate",
+      "videoIds": ["photosynthesis-1", "photosynthesis-2"],
+      "description": "The process by which plants convert light energy into chemical energy."
+    }
+  ],
+  "flashcards": [
+    {
+      "id": "oc-1",
+      "topicId": "organic-chemistry-basics",
+      "front": "What is an alkane?",
+      "back": "A saturated hydrocarbon with single C-C bonds, general formula CnH2n+2",
+      "mnemonic": "Alkanes = All single bonds"
+    },
+    {
+      "id": "oc-2", 
+      "topicId": "organic-chemistry-basics",
+      "front": "Define isomerism",
+      "back": "Compounds with same molecular formula but different structural arrangements",
+      "mnemonic": "ISO = same formula, different structure"
+    },
+    {
+      "id": "oc-3",
+      "topicId": "organic-chemistry-basics", 
+      "front": "Name three functional groups",
+      "back": "Hydroxyl (-OH), Carbonyl (C=O), Carboxyl (-COOH)",
+      "mnemonic": "Hydroxyl, Carbonyl, Carboxyl - the big three"
+    },
+    {
+      "id": "oc-4",
+      "topicId": "organic-chemistry-basics",
+      "front": "What is sp3 hybridization?",
+      "back": "Tetrahedral geometry with 109.5° bond angles, found in alkanes",
+      "mnemonic": "sp3 = tetrahedral (4 corners)"
+    },
+    {
+      "id": "oc-5",
+      "topicId": "organic-chemistry-basics",
+      "front": "Define nucleophile",
+      "back": "Electron-rich species that attacks electron-deficient centers",
+      "mnemonic": "Nucleophile = nucleus loving (electron rich)"
+    },
+    {
+      "id": "ps-1",
+      "topicId": "photosynthesis",
+      "front": "What is the overall equation for photosynthesis?",
+      "back": "6CO2 + 6H2O + light energy → C6H12O6 + 6O2",
+      "mnemonic": "6 of everything except glucose"
+    },
+    {
+      "id": "ps-2",
+      "topicId": "photosynthesis", 
+      "front": "Where do light reactions occur?",
+      "back": "In the thylakoid membranes of chloroplasts",
+      "mnemonic": "Thylakoids = light reactions"
+    },
+    {
+      "id": "ps-3",
+      "topicId": "photosynthesis",
+      "front": "What is produced in the Calvin cycle?",
+      "back": "Glucose (C6H12O6) using CO2 and ATP/NADPH",
+      "mnemonic": "Calvin cycle = glucose factory"
+    },
+    {
+      "id": "ps-4",
+      "topicId": "photosynthesis",
+      "front": "What is chlorophyll's function?",
+      "back": "Absorbs light energy and converts it to chemical energy",
+      "mnemonic": "Chlorophyll = light absorber"
+    },
+    {
+      "id": "ps-5",
+      "topicId": "photosynthesis",
+      "front": "Name the two stages of photosynthesis",
+      "back": "Light-dependent reactions and Calvin cycle (light-independent)",
+      "mnemonic": "Light reactions + Calvin cycle"
+    }
+  ],
+  "questions": [
+    {
+      "id": "oc-q1",
+      "topicId": "organic-chemistry-basics",
+      "stem": "Which of the following is NOT a characteristic of alkanes?",
+      "options": [
+        "Saturated hydrocarbons",
+        "Single C-C bonds only", 
+        "General formula CnH2n+2",
+        "Contain double bonds"
+      ],
+      "answer": 3,
+      "explanation": "Alkanes are saturated hydrocarbons with only single bonds. Double bonds are found in alkenes.",
+      "difficulty": "Easy",
+      "tags": ["alkanes", "hydrocarbons", "bonding"]
+    },
+    {
+      "id": "oc-q2",
+      "topicId": "organic-chemistry-basics", 
+      "stem": "What type of hybridization is found in ethene (C2H4)?",
+      "options": [
+        "sp3",
+        "sp2", 
+        "sp",
+        "sp3d"
+      ],
+      "answer": 1,
+      "explanation": "Ethene has a C=C double bond, requiring sp2 hybridization with trigonal planar geometry.",
+      "difficulty": "Medium",
+      "tags": ["hybridization", "alkenes", "bonding"]
+    },
+    {
+      "id": "ps-q1",
+      "topicId": "photosynthesis",
+      "stem": "In which part of the chloroplast does the Calvin cycle occur?",
+      "options": [
+        "Thylakoid membrane",
+        "Thylakoid lumen",
+        "Stroma",
+        "Outer membrane"
+      ],
+      "answer": 2,
+      "explanation": "The Calvin cycle (light-independent reactions) occurs in the stroma, the fluid-filled space surrounding the thylakoids.",
+      "difficulty": "Medium", 
+      "tags": ["calvin-cycle", "chloroplast", "location"]
+    },
+    {
+      "id": "ps-q2",
+      "topicId": "photosynthesis",
+      "stem": "What is the primary function of NADPH in photosynthesis?",
+      "options": [
+        "Light absorption",
+        "CO2 fixation", 
+        "Electron transport",
+        "Reducing power for glucose synthesis"
+      ],
+      "answer": 3,
+      "explanation": "NADPH provides the reducing power (electrons) needed to convert CO2 into glucose during the Calvin cycle.",
+      "difficulty": "Hard",
+      "tags": ["NADPH", "calvin-cycle", "reduction"]
+    }
+  ]
+}
