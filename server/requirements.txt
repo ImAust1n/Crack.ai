@@ -1,5 +1,5 @@
-Flask==2.3.3            # for better 3.13 support
-requests==2.32.3        # latest stable
-python-dotenv==1.1.0    # added explicit 3.13 support
-langchain-groq==0.3.7   # recent version, safer compatibility
+Flask==2.3.3           
+requests==2.32.3       
+python-dotenv==1.1.0    
+langchain-groq==0.3.7
 
